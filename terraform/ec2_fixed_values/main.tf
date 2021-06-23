@@ -1,35 +1,38 @@
+provider "aws" {
+  region = "eu-west-3"
+}
+
 resource "aws_security_group" "this" {
   vpc_id = "vpc-05a348e6827173c72"
 
   ingress {
-    from_port = "0"
-    to_port = "22"
-    protocol = "TCP"
-    cidr_blocks = ["0.0.0.0/0"] 
-  }
-
-   ingress {
-    from_port = "0"
-    to_port = "80"
-    protocol = "TCP"
-    cidr_blocks = ["0.0.0.0/0"] 
+    from_port   = "0"
+    to_port     = "22"
+    protocol    = "TCP"
+    cidr_blocks = ["176.174.76.134/32"]
   }
 
   ingress {
-    from_port = "-1"
-    to_port = "-1"
-    protocol = "icmp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    from_port   = "0"
+    to_port     = "80"
+    protocol    = "TCP"
+    cidr_blocks = ["176.174.76.134/32"]
+  }
+
+  ingress {
+    from_port   = "-1"
+    to_port     = "-1"
+    protocol    = "icmp"
+    cidr_blocks = ["176.174.76.134/32"]
   }
 
   egress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["0.0.0.0/0"] 
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = var.tags
 }
 
 resource "aws_instance" "this" {
@@ -41,10 +44,9 @@ resource "aws_instance" "this" {
   key_name               = "demo"
 
   root_block_device {
-      delete_on_termination = true
-      volume_size = 15
-      encrypted = false
+    delete_on_termination = true
+    volume_size           = 15
+    encrypted             = false
   }
 
-  tags = var.tags
 }
